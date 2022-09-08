@@ -5,87 +5,98 @@ using System.Threading.Tasks;
 using CosmosDBDemo.AZ204.Domain;
 using CosmosDBDemo.AZ204.DTO;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Linq;
 
 namespace CosmosDBDemo.AZ204.Infrastructure;
 
 public class MoviesDataContext : IMoviesDataContext
 {
-    private readonly CosmosClient _cosmosClient;
-    private readonly Database _database;
     private readonly Container _container;
-    private readonly DatabaseConfiguration _databaseConfiguration;
 
-    public MoviesDataContext(
-        CosmosClient cosmosClient,
-        Database database,
-        Container container,
-        DatabaseConfiguration databaseConfiguration)
+    public MoviesDataContext(Container container)
     {
-        _cosmosClient = cosmosClient;
-        _database = database;
         _container = container;
-        _databaseConfiguration = databaseConfiguration;
     }
 
     public async Task<MovieEntity> InsertAsync(CreateMovieRequest request)
     {
-        var movie = MovieEntity.Create(request.Title, request.Year, request.AgeRestriction, request.Price);
+        var movie = new MovieEntity(request.Title, request.Year, request.AgeRestriction, request.Price);
         await _container.CreateItemAsync(movie, new PartitionKey(movie.Id.ToString()));
 
         return movie;
     }
 
-    public Task<MovieEntity> UpdateAsync(UpdateMovieRequest request, Guid id)
+    public async Task<MovieEntity> UpdateAsync(UpdateMovieRequest request, Guid id)
     {
-        throw new NotImplementedException();
+        var movieId = id.ToString();
+        var partitionKey = new PartitionKey(movieId);
+        var movie = await _container.ReadItemAsync<MovieEntity>(movieId, partitionKey);
+
+        var itemBody = movie.Resource;
+
+        if (itemBody == null)
+        {
+            return null;
+        }
+
+        itemBody.Update(request.Title, request.Year, request.AgeRestriction, request.Price);
+
+        await _container.ReplaceItemAsync(
+            itemBody,
+            itemBody.Id.ToString(),
+            new PartitionKey(itemBody.Id.ToString()));
+
+        return itemBody;
     }
 
-    public Task<bool> DeleteAsync(Guid id)
+    public async Task<bool> DeleteAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var movieId = id.ToString();
+        var partitionKey = new PartitionKey(movieId);
+
+        try
+        {
+            await _container.DeleteItemAsync<MovieEntity>(movieId, partitionKey);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return false;
+        }
     }
 
-    public Task<List<MovieEntity>> GetMoviesAsync()
+    public async Task<List<MovieEntity>> GetMoviesAsync()
     {
-        throw new NotImplementedException();
+        const string query = @"SELECT * FROM items";
+
+        var iterator = _container.GetItemQueryIterator<MovieEntity>(query);
+
+        var matches = new List<MovieEntity>();
+
+        while (iterator.HasMoreResults)
+        {
+            var next = await iterator.ReadNextAsync();
+            matches.AddRange(next);
+        }
+
+        return matches;
     }
 
     public async Task<MovieEntity> GetMovieAsync(Guid id)
     {
-        var query = $"SELECT * FROM c WHERE c.Id = '{id}'";
+        var iterator = _container.GetItemLinqQueryable<MovieEntity>()
+            .Where(m => m.Id == id)
+            .ToFeedIterator();
 
-        Console.WriteLine($"Running query: {query}");
+        var matches = new List<MovieEntity>();
 
-        var queryDefinition = new QueryDefinition(query);
-        using var queryResultSetIterator = _container.GetItemQueryIterator<MovieEntity>(queryDefinition);
-
-        MovieEntity result = default;
-
-        while (queryResultSetIterator.HasMoreResults)
+        while (iterator.HasMoreResults)
         {
-            var currentResultSet = await queryResultSetIterator.ReadNextAsync();
-
-            var count = currentResultSet.Count;
-
-            if (count != 1)
-            {
-                return null;
-            }
-
-            result = currentResultSet.First();
+            var next = await iterator.ReadNextAsync();
+            matches.AddRange(next);
         }
 
-        return result;
-    }
-
-    public async Task CreateDataBaseAsync()
-    {
-        await _cosmosClient.CreateDatabaseIfNotExistsAsync(_databaseConfiguration.DatabaseId);
-    }
-
-    public async Task CreateContainerAsync()
-    {
-        const string partitionKey = "/Id";
-        await _database.CreateContainerIfNotExistsAsync(_databaseConfiguration.ContainerId, partitionKey);
+        return matches.SingleOrDefault();
     }
 }

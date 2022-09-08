@@ -14,15 +14,7 @@ builder.Services.AddSwaggerGen();
 var databaseConfig = builder.Configuration.GetSection("DatabaseConfiguration").Get<DatabaseConfiguration>();
 builder.Services.AddScoped(_ => databaseConfig);
 
-var options = new CosmosClientOptions
-{
-    SerializerOptions = new CosmosSerializationOptions
-    {
-        PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase,
-    }
-};
-
-var cosmosClient = new CosmosClient(databaseConfig.EndpointUrl, databaseConfig.PrimaryKey, options);
+var cosmosClient = new CosmosClient(databaseConfig.EndpointUrl, databaseConfig.PrimaryKey);
 builder.Services.AddScoped(_ => cosmosClient);
 
 var cosmosDatabase = await cosmosClient.CreateDatabaseIfNotExistsAsync(databaseConfig.DatabaseId);
@@ -34,7 +26,7 @@ var cosmosContainer = await cosmosDatabase.Database.CreateContainerIfNotExistsAs
 builder.Services.AddScoped(_ => cosmosContainer.Container);
 
 
-var context = new MoviesDataContext(cosmosClient, cosmosDatabase, cosmosContainer, databaseConfig);
+var context = new MoviesDataContext(cosmosContainer);
 
 builder.Services.AddScoped<IMoviesDataContext>(_ => context);
 

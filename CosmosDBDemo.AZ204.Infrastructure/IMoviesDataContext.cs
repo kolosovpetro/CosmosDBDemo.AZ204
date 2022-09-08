@@ -13,6 +13,4 @@ public interface IMoviesDataContext
     Task<bool> DeleteAsync(Guid id);
     Task<List<MovieEntity>> GetMoviesAsync();
     Task<MovieEntity> GetMovieAsync(Guid id);
-    Task CreateDataBaseAsync();
-    Task CreateContainerAsync();
 }

@@ -20,3 +20,4 @@ This time Azure Cosmos Db simple CRUD including key concepts of implementation.
 
 - `dotnet add package FluentValidation --version 11.2.1`
 - `dotnet add package Microsoft.Azure.Cosmos --version 3.30.1`
+- `dotnet add package Newtonsoft.Json`

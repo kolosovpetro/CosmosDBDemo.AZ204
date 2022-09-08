@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using CosmosDBDemo.AZ204.DTO;
 using CosmosDBDemo.AZ204.Infrastructure;
@@ -17,7 +18,7 @@ public class CosmosDbDemoController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> InsertMovie(CreateMovieRequest request)
+    public async Task<IActionResult> InsertMovie([FromBody] CreateMovieRequest request)
     {
         var result = await _moviesDataContext.InsertAsync(request);
 
@@ -25,6 +26,48 @@ public class CosmosDbDemoController : ControllerBase
         {
             return BadRequest();
         }
+
+        return Ok(result);
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetMovie([FromRoute] Guid id)
+    {
+        var result = await _moviesDataContext.GetMovieAsync(id);
+
+        if (result == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(result);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetMovies()
+    {
+        var result = await _moviesDataContext.GetMoviesAsync();
+
+        return Ok(result);
+    }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> UpdateMovie([FromRoute] Guid id, [FromBody] UpdateMovieRequest request)
+    {
+        var result = await _moviesDataContext.UpdateAsync(request, id);
+
+        if (result == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(result);
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteMovie([FromRoute] Guid id)
+    {
+        var result = await _moviesDataContext.DeleteAsync(id);
 
         return Ok(result);
     }

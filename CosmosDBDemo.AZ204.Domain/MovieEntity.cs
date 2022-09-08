@@ -1,20 +1,26 @@
 ﻿using System;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace CosmosDBDemo.AZ204.Domain;
 
 public class MovieEntity
 {
-    [JsonPropertyName("id")] public Guid Id { get; }
-    public string Title { get; private set; }
-    public int Year { get; private set; }
-    public int AgeRestriction { get; private set; }
-    public float Price { get; private set; }
+    [JsonProperty(PropertyName = "id")] public Guid Id { get; set; }
+    [JsonProperty(PropertyName = "title")] public string Title { get; set; }
+    [JsonProperty(PropertyName = "year")] public int Year { get; set; }
 
-    public DateTime CreatedAt { get; }
-    public DateTime? UpdatedAt { get; private set; }
+    [JsonProperty(PropertyName = "ageRestriction")]
+    public int AgeRestriction { get; set; }
 
-    private MovieEntity(string title, int year, int ageRestriction, float price)
+    [JsonProperty(PropertyName = "price")] public float Price { get; set; }
+
+    [JsonProperty(PropertyName = "createdAt")]
+    public DateTime CreatedAt { get; set; }
+
+    [JsonProperty(PropertyName = "updatedAt")]
+    public DateTime? UpdatedAt { get; set; }
+
+    public MovieEntity(string title, int year, int ageRestriction, float price)
     {
         Id = Guid.NewGuid();
         Title = title;
@@ -26,15 +32,8 @@ public class MovieEntity
         new MovieEntityValidator().ValidateAndThrowException(this);
     }
 
-    private MovieEntity()
+    public MovieEntity()
     {
-    }
-
-    public static MovieEntity Create(string title, int year, int ageRestriction, float price)
-    {
-        var movie = new MovieEntity(title, year, ageRestriction, price);
-
-        return movie;
     }
 
     public void Update(string title, int year, int ageRestriction, float price)
