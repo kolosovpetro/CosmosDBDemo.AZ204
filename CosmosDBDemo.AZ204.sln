@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmosDBDemo.AZ204", "CosmosDBDemo.AZ204\CosmosDBDemo.AZ204.csproj", "{6EBD84B5-9041-4BDA-B9F2-80D74E591E2F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{82DD7B33-5137-4453-A587-C993C8FB70D0}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{91830F25-6D0A-4138-ACF5-32F16499AE3C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{A4DAE0F6-F872-41B8-B3AE-3985CAC6EB1B}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\run-build-and-test-dotnet.yml = .github\workflows\run-build-and-test-dotnet.yml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmosDBDemo.AZ204.Domain", "CosmosDBDemo.AZ204.Domain\CosmosDBDemo.AZ204.Domain.csproj", "{ED03EA41-4766-4F51-887E-39E9A675AFDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmosDBDemo.AZ204.Infrastructure", "CosmosDBDemo.AZ204.Infrastructure\CosmosDBDemo.AZ204.Infrastructure.csproj", "{FD00040F-3D6B-4336-B25E-015A547FBD9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmosDBDemo.AZ204.DTO", "CosmosDBDemo.AZ204.DTO\CosmosDBDemo.AZ204.DTO.csproj", "{B2CEC631-A852-4DE5-9D9C-E2E4E600D8DB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6EBD84B5-9041-4BDA-B9F2-80D74E591E2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EBD84B5-9041-4BDA-B9F2-80D74E591E2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EBD84B5-9041-4BDA-B9F2-80D74E591E2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EBD84B5-9041-4BDA-B9F2-80D74E591E2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED03EA41-4766-4F51-887E-39E9A675AFDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED03EA41-4766-4F51-887E-39E9A675AFDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED03EA41-4766-4F51-887E-39E9A675AFDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED03EA41-4766-4F51-887E-39E9A675AFDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD00040F-3D6B-4336-B25E-015A547FBD9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD00040F-3D6B-4336-B25E-015A547FBD9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD00040F-3D6B-4336-B25E-015A547FBD9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD00040F-3D6B-4336-B25E-015A547FBD9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2CEC631-A852-4DE5-9D9C-E2E4E600D8DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2CEC631-A852-4DE5-9D9C-E2E4E600D8DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2CEC631-A852-4DE5-9D9C-E2E4E600D8DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2CEC631-A852-4DE5-9D9C-E2E4E600D8DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A4DAE0F6-F872-41B8-B3AE-3985CAC6EB1B} = {91830F25-6D0A-4138-ACF5-32F16499AE3C}
+	EndGlobalSection
+EndGlobal

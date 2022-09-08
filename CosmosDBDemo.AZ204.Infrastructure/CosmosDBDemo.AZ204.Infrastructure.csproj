@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CosmosDBDemo.AZ204.Domain\CosmosDBDemo.AZ204.Domain.csproj" />
+      <ProjectReference Include="..\CosmosDBDemo.AZ204.DTO\CosmosDBDemo.AZ204.DTO.csproj" />
+    </ItemGroup>
+
+</Project>
