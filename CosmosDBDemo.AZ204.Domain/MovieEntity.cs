@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace CosmosDBDemo.AZ204.Domain;
 
 public class MovieEntity
 {
-    public Guid Id { get; }
+    [JsonPropertyName("id")] public Guid Id { get; }
     public string Title { get; private set; }
     public int Year { get; private set; }
     public int AgeRestriction { get; private set; }

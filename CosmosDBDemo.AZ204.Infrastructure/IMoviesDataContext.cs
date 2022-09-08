@@ -9,8 +9,10 @@ namespace CosmosDBDemo.AZ204.Infrastructure;
 public interface IMoviesDataContext
 {
     Task<MovieEntity> InsertAsync(CreateMovieRequest request);
-    Task<MovieEntity> UpdateAsync(UpdateMovieRequest request);
+    Task<MovieEntity> UpdateAsync(UpdateMovieRequest request, Guid id);
     Task<bool> DeleteAsync(Guid id);
     Task<List<MovieEntity>> GetMoviesAsync();
     Task<MovieEntity> GetMovieAsync(Guid id);
+    Task CreateDataBaseAsync();
+    Task CreateContainerAsync();
 }
